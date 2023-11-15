@@ -1,0 +1,17 @@
+/Users/rayanaribeirobonfanti/Downloads/auth-api-master/src/main/java/com/example/auth/domain/user/AuthenticationDTO.java
+/Users/rayanaribeirobonfanti/Downloads/auth-api-master/src/main/java/com/example/auth/domain/user/User.java
+/Users/rayanaribeirobonfanti/Downloads/auth-api-master/src/main/java/com/example/auth/repositories/UserRepository.java
+/Users/rayanaribeirobonfanti/Downloads/auth-api-master/src/main/java/com/example/auth/infra/security/TokenService.java
+/Users/rayanaribeirobonfanti/Downloads/auth-api-master/src/main/java/com/example/auth/repositories/ProductRepository.java
+/Users/rayanaribeirobonfanti/Downloads/auth-api-master/src/main/java/com/example/auth/domain/user/RegisterDTO.java
+/Users/rayanaribeirobonfanti/Downloads/auth-api-master/src/main/java/com/example/auth/services/AuthorizationService.java
+/Users/rayanaribeirobonfanti/Downloads/auth-api-master/src/main/java/com/example/auth/infra/security/SecurityConfigurations.java
+/Users/rayanaribeirobonfanti/Downloads/auth-api-master/src/main/java/com/example/auth/domain/user/LoginResponseDTO.java
+/Users/rayanaribeirobonfanti/Downloads/auth-api-master/src/main/java/com/example/auth/controllers/ProductController.java
+/Users/rayanaribeirobonfanti/Downloads/auth-api-master/src/main/java/com/example/auth/domain/product/Product.java
+/Users/rayanaribeirobonfanti/Downloads/auth-api-master/src/main/java/com/example/auth/domain/user/UserRole.java
+/Users/rayanaribeirobonfanti/Downloads/auth-api-master/src/main/java/com/example/auth/domain/product/ProductResponseDTO.java
+/Users/rayanaribeirobonfanti/Downloads/auth-api-master/src/main/java/com/example/auth/controllers/AuthenticationController.java
+/Users/rayanaribeirobonfanti/Downloads/auth-api-master/src/main/java/com/example/auth/domain/product/ProductRequestDTO.java
+/Users/rayanaribeirobonfanti/Downloads/auth-api-master/src/main/java/com/example/auth/infra/security/SecurityFilter.java
+/Users/rayanaribeirobonfanti/Downloads/auth-api-master/src/main/java/com/example/auth/AuthApplication.java

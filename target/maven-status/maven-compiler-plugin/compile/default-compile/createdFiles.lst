@@ -1,0 +1,17 @@
+com/example/auth/infra/security/SecurityFilter.class
+com/example/auth/infra/security/SecurityConfigurations.class
+com/example/auth/infra/security/TokenService.class
+com/example/auth/repositories/ProductRepository.class
+com/example/auth/domain/user/AuthenticationDTO.class
+com/example/auth/controllers/ProductController.class
+com/example/auth/repositories/UserRepository.class
+com/example/auth/AuthApplication.class
+com/example/auth/domain/user/RegisterDTO.class
+com/example/auth/domain/user/User.class
+com/example/auth/domain/user/LoginResponseDTO.class
+com/example/auth/domain/product/ProductResponseDTO.class
+com/example/auth/domain/product/Product.class
+com/example/auth/controllers/AuthenticationController.class
+com/example/auth/domain/product/ProductRequestDTO.class
+com/example/auth/services/AuthorizationService.class
+com/example/auth/domain/user/UserRole.class
