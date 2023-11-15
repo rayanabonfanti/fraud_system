@@ -2,7 +2,6 @@ package com.fraud.system.domain.transaction;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
 
 import java.math.BigDecimal;
 

@@ -11,18 +11,15 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
 @Service
 public class TokenService {
 
+    private final StringRedisTemplate redisTemplate;
     @Value("${api.security.token.secret}")
     private String secret;
-
-    private final StringRedisTemplate redisTemplate;
 
     public TokenService(StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
@@ -37,8 +34,7 @@ public class TokenService {
                     .withExpiresAt(genExpiration())
                     .sign(algorithm);
 
-            // Alterar depois para salvar o token no Redis com expiração em 10 minutos (600 segundos)
-            saveTokenInRedis(user.getLogin(), token, 1 * 60);
+            saveTokenInRedis(user.getLogin(), token, 10 * 60);
 
             return token;
         } catch (JWTCreationException exception) {
@@ -59,9 +55,8 @@ public class TokenService {
         }
     }
 
-    // Alterar depois para o token expirar em 10 minutos (600 segundos)
     private Instant genExpiration() {
-        return Instant.now().plus(60, ChronoUnit.SECONDS);
+        return Instant.now().plus(600, ChronoUnit.SECONDS);
     }
 
     private void saveTokenInRedis(String username, String token, long expirationSeconds) {

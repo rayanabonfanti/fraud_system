@@ -1,6 +1,6 @@
 package com.fraud.system.domain.transaction;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Id;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,7 +20,7 @@ public class Transaction {
     private BigDecimal amount;
     private String location;
 
-    public Transaction(String userId, BigDecimal amount, String location){
+    public Transaction(String userId, BigDecimal amount, String location) {
         this.userId = userId;
         this.amount = amount;
         this.location = location;

@@ -1,6 +1,8 @@
 package com.fraud.system.domain.user;
 
-import jakarta.persistence.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,10 +26,10 @@ public class User implements UserDetails {
     private String login;
     private String password;
     private UserRole role;
-    private int failedLoginAttempts; // Adicionado campo para rastrear tentativas falhas
-    private boolean blocked; // Adicionado campo para rastrear o status de bloqueio
+    private int failedLoginAttempts;
+    private boolean blocked;
 
-    public User(String login, String password, UserRole role){
+    public User(String login, String password, UserRole role) {
         this.login = login;
         this.password = password;
         this.role = role;
@@ -35,7 +37,8 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == UserRole.ADMIN)
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
@@ -51,7 +54,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !this.isBlocked(); // Alterado para verificar se o usuário está bloqueado
+        return !this.isBlocked();
     }
 
     @Override
@@ -61,26 +64,21 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return !this.isBlocked(); // Alterado para verificar se o usuário está bloqueado
+        return !this.isBlocked();
     }
 
-    // Método para incrementar as tentativas falhas
     public void incrementFailedLoginAttempts() {
         this.failedLoginAttempts++;
     }
 
-    // Método para reiniciar as tentativas falhas
     public void resetFailedLoginAttempts() {
         this.failedLoginAttempts = 0;
     }
 
-    // Método para verificar se o usuário está bloqueado
     public boolean isBlocked() {
-        // Define a lógica de bloqueio, por exemplo, bloquear após 3 tentativas falhas
         return this.failedLoginAttempts >= 3 || this.blocked;
     }
 
-    // Método para bloquear o usuário
     public void setBlocked(boolean blocked) {
         this.blocked = blocked;
     }
