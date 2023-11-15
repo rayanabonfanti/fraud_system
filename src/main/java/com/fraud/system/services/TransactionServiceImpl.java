@@ -66,7 +66,7 @@ public class TransactionServiceImpl implements TransactionService {
             return transaction.getAmount().compareTo(fraudDetectionLimit) > 0;
         } else {
             // Se for a primeira transação, permitir até 1000
-            return transaction.getAmount().compareTo(BigDecimal.valueOf(1000)) <= 0;
+            return transaction.getAmount().compareTo(BigDecimal.valueOf(1000.01)) >= 0;
         }
     }
 

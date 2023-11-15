@@ -12,10 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.fraud.system.domain.user.AuthenticationDTO;
 import com.fraud.system.domain.user.LoginResponseDTO;
 import com.fraud.system.domain.user.User;
@@ -46,6 +43,11 @@ public class AuthenticationController {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;  // Adicione um encoder para verificar a senha
+
+    @GetMapping
+    public ResponseEntity healthcheck() {
+        return ResponseEntity.ok().body("OK");
+    }
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {

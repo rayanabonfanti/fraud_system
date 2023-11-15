@@ -24,10 +24,8 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @GetMapping
-    public ResponseEntity getAllTransactions(){
-        List<TransactionResponseDTO> transactionsList = this.repository.findAll().stream().map(TransactionResponseDTO::new).toList();
-
-        return ResponseEntity.ok(transactionsList);
+    public ResponseEntity healthcheck() {
+        return ResponseEntity.ok().body("OK");
     }
 
     @PostMapping
