@@ -1,1 +1,8 @@
-/Users/rayanaribeirobonfanti/Downloads/auth-api-master/src/test/java/com/example/auth/AuthApplicationTests.java
+/Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/test/java/com/fraud/system/controllers/AuthenticationControllerTest.java
+/Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/test/java/com/fraud/system/services/TransactionServiceImplTest.java
+/Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/test/java/com/fraud/system/controllers/TransactionControllerTest.java
+/Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/test/java/com/fraud/system/services/AuthorizationServiceTest.java
+/Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/test/java/com/fraud/system/controllers/UserControllerTest.java
+/Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/test/java/com/fraud/system/exceptions/GlobalExpcetionHandlerTest.java
+/Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/test/java/com/fraud/system/FraudSystemApplicationTests.java
+/Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/test/java/com/fraud/system/exceptions/CustomExceptionTest.java

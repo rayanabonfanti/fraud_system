@@ -80,4 +80,8 @@ public class TransactionServiceImpl implements TransactionService {
                 .put(amount, LocalDateTime.now());
     }
 
+    public Map<String, Map<BigDecimal, LocalDateTime>> getLastTransactionTimeMap() {
+        return lastTransactionTimeMap;
+    }
+
 }

@@ -3,7 +3,7 @@ package com.fraud.system.controllers;
 import com.fraud.system.domain.user.AuthenticationDTO;
 import com.fraud.system.domain.user.LoginResponseDTO;
 import com.fraud.system.domain.user.User;
-import com.fraud.system.infra.security.TokenService;
+import com.fraud.system.security.TokenService;
 import com.fraud.system.repositories.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
