@@ -1,9 +1,6 @@
 /Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/domain/user/User.java
-/Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/infra/security/SecurityConfigurations.java
 /Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/domain/user/LoginResponseDTO.java
 /Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/FraudSystemApplication.java
-/Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/infra/security/SecurityFilter.java
-/Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/infra/security/TokenService.java
 /Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/controllers/AuthenticationController.java
 /Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/interfaces/TransactionService.java
 /Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/domain/user/RegisterDTO.java
@@ -12,9 +9,12 @@
 /Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/repositories/TransactionRepository.java
 /Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/domain/transaction/TransactionRequestDTO.java
 /Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/services/AuthorizationService.java
+/Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/security/SecurityConfigurations.java
 /Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/domain/transaction/TransactionResponseDTO.java
 /Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/domain/user/UserRole.java
+/Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/security/TokenService.java
 /Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/exceptions/CustomException.java
+/Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/security/SecurityFilter.java
 /Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/exceptions/GlobalExceptionHandler.java
 /Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/controllers/UserController.java
 /Users/rayanaribeirobonfanti/Documents/projects github/fraud_system/src/main/java/com/fraud/system/domain/user/AuthenticationDTO.java

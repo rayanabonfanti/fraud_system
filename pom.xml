@@ -87,25 +87,12 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -130,8 +117,11 @@
 						</goals>
 						<configuration>
 							<excludes>
-								<exclude>**/domain/**</exclude>
 								<exclude>**/security/**</exclude>
+								<exclude>src/main/java/com/fraud/system/domain/**</exclude>
+								<exclude>src/main/java/com/fraud/system/FraudSystemApplication.java</exclude>
+								<exclude>src/main/java/com/fraud/system/FraudSystemApplication.class</exclude>
+								<!-- Não está funcionando os excludes -->
 							</excludes>
 							<rules>
 								<rule>
@@ -140,7 +130,8 @@
 										<limit>
 											<counter>COMPLEXITY</counter>
 											<value>COVEREDRATIO</value>
-											<minimum>0.40</minimum> <!-- Alterar para 70% ou 90% quando exclude estiver ok -->
+											<minimum>0.40</minimum>
+											<!-- Apenas as pastas: exceptions, controllers e services dão 85% de cobertura -->
 										</limit>
 									</limits>
 								</rule>

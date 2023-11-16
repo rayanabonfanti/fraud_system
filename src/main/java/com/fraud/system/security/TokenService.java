@@ -55,11 +55,11 @@ public class TokenService {
         }
     }
 
-    private Instant genExpiration() {
+    public Instant genExpiration() {
         return Instant.now().plus(600, ChronoUnit.SECONDS);
     }
 
-    private void saveTokenInRedis(String username, String token, long expirationSeconds) {
+    public void saveTokenInRedis(String username, String token, long expirationSeconds) {
         ValueOperations<String, String> ops = redisTemplate.opsForValue();
         ops.set(username, token, expirationSeconds, TimeUnit.SECONDS);
     }
