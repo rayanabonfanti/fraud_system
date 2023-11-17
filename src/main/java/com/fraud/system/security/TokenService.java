@@ -45,11 +45,17 @@ public class TokenService {
     public String validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.require(algorithm)
+            String subject = JWT.require(algorithm)
                     .withIssuer("auth-api")
                     .build()
                     .verify(token)
                     .getSubject();
+
+            if (subject != null && token.trim().equalsIgnoreCase(getUsernameFromRedis(subject).trim())) {
+                return subject;
+            } else {
+                return "";
+            }
         } catch (JWTVerificationException exception) {
             return "";
         }
@@ -57,6 +63,10 @@ public class TokenService {
 
     public Instant genExpiration() {
         return Instant.now().plus(600, ChronoUnit.SECONDS);
+    }
+
+    private String getUsernameFromRedis(String subject) {
+        return redisTemplate.opsForValue().get(subject);
     }
 
     public void saveTokenInRedis(String username, String token, long expirationSeconds) {
