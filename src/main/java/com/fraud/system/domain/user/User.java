@@ -1,5 +1,7 @@
 package com.fraud.system.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,23 +30,31 @@ public class User implements UserDetails {
     private UserRole role;
     private int failedLoginAttempts;
     private boolean blocked;
-
+    @JsonIgnore
+    private boolean enabled;
+    @JsonIgnore
+    private boolean accountNonExpired;
+    @JsonIgnore
+    private boolean accountNonLocked;
+    @JsonIgnore
+    private boolean credentialsNonExpired;
+    @JsonIgnore
+    @Override
+    public String getUsername() {
+        return login;
+    }
     public User(String login, String password, UserRole role) {
         this.login = login;
         this.password = password;
         this.role = role;
     }
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.role == UserRole.ADMIN)
             return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-    }
-
-    @Override
-    public String getUsername() {
-        return login;
     }
 
     @Override

@@ -4,6 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fraud.system.domain.user.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -34,7 +36,7 @@ public class TokenService {
                     .withExpiresAt(genExpiration())
                     .sign(algorithm);
 
-            saveTokenInRedis(user.getLogin(), token, 10 * 60);
+            saveUserInRedis(user, token, 10 * 60);
 
             return token;
         } catch (JWTCreationException exception) {
@@ -42,7 +44,7 @@ public class TokenService {
         }
     }
 
-    public String validateToken(String token) {
+    public User validateTokenAndRetrieveUser(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String subject = JWT.require(algorithm)
@@ -51,13 +53,16 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
 
-            if (subject != null && token.trim().equalsIgnoreCase(getUsernameFromRedis(subject).trim())) {
-                return subject;
-            } else {
-                return "";
+            if (subject != null) {
+                String userJson = getUserFromRedis(subject);
+                String tokenRedis = getUsernameFromRedis(subject).trim();
+                if (userJson != null && userJson.trim().equalsIgnoreCase(tokenRedis)) {
+                    return convertJsonToUser(userJson);
+                }
             }
+            return null;
         } catch (JWTVerificationException exception) {
-            return "";
+            return null;
         }
     }
 
@@ -69,8 +74,34 @@ public class TokenService {
         return redisTemplate.opsForValue().get(subject);
     }
 
-    public void saveTokenInRedis(String username, String token, long expirationSeconds) {
-        ValueOperations<String, String> ops = redisTemplate.opsForValue();
-        ops.set(username, token, expirationSeconds, TimeUnit.SECONDS);
+    private String getUserFromRedis(String subject) {
+        return redisTemplate.opsForValue().get(subject);
     }
+
+    private void saveUserInRedis(User user, String token, long expirationSeconds) {
+        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+        String userJson = convertUserToJson(user);
+        ops.set(user.getLogin(), userJson, expirationSeconds, TimeUnit.SECONDS);
+    }
+
+    private User convertJsonToUser(String userJson) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            User user = objectMapper.readValue(userJson, User.class);
+            return user;
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error converting JSON to User", e);
+        }
+    }
+
+    private String convertUserToJson(User user) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String returnJson = objectMapper.writeValueAsString(user);
+            return returnJson;
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error converting User to JSON", e);
+        }
+    }
+
 }
