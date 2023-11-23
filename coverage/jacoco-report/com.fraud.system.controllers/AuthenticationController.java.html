@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthenticationController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.fraud.system</a> &gt; <a href="index.source.html" class="el_package">com.fraud.system.controllers</a> &gt; <span class="el_source">AuthenticationController.java</span></div><h1>AuthenticationController.java</h1><pre class="source lang-java linenums">package com.fraud.system.controllers;
+
+import com.fraud.system.domain.user.AuthenticationDTO;
+import com.fraud.system.domain.user.LoginResponseDTO;
+import com.fraud.system.domain.user.User;
+import com.fraud.system.security.TokenService;
+import com.fraud.system.repositories.UserRepository;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping(&quot;auth&quot;)
+<span class="fc" id="L19">public class AuthenticationController {</span>
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserRepository repository;
+
+    @Autowired
+    private TokenService tokenService;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @GetMapping
+    public ResponseEntity healthcheck() {
+<span class="fc" id="L34">        return ResponseEntity.ok().body(&quot;OK&quot;);</span>
+    }
+
+    @PostMapping(&quot;/login&quot;)
+    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
+        try {
+<span class="fc" id="L40">            User user = repository.findByLogin(data.login());</span>
+
+<span class="fc bfc" id="L42" title="All 2 branches covered.">            if (user.isBlocked()) {</span>
+<span class="fc" id="L43">                return ResponseEntity.status(403).body(&quot;User is blocked&quot;);</span>
+            }
+
+<span class="fc" id="L46">            var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());</span>
+<span class="fc" id="L47">            var auth = this.authenticationManager.authenticate(usernamePassword);</span>
+
+<span class="fc" id="L49">            user.resetFailedLoginAttempts();</span>
+<span class="fc" id="L50">            repository.save(user);</span>
+
+<span class="fc" id="L52">            var token = tokenService.generateToken((User) auth.getPrincipal());</span>
+
+<span class="fc" id="L54">            return ResponseEntity.ok(new LoginResponseDTO(token));</span>
+<span class="nc" id="L55">        } catch (AuthenticationException e) {</span>
+<span class="nc" id="L56">            User user = repository.findByLogin(data.login());</span>
+<span class="nc" id="L57">            user.incrementFailedLoginAttempts();</span>
+<span class="nc" id="L58">            repository.save(user);</span>
+
+<span class="nc bnc" id="L60" title="All 2 branches missed.">            if (user.getFailedLoginAttempts() &gt;= 3) {</span>
+<span class="nc" id="L61">                user.setBlocked(true);</span>
+<span class="nc" id="L62">                repository.save(user);</span>
+            }
+
+<span class="nc" id="L65">            return ResponseEntity.status(401).body(&quot;Invalid credentials&quot;);</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TransactionServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.fraud.system</a> &gt; <a href="index.source.html" class="el_package">com.fraud.system.services</a> &gt; <span class="el_source">TransactionServiceImpl.java</span></div><h1>TransactionServiceImpl.java</h1><pre class="source lang-java linenums">package com.fraud.system.services;
+
+import com.fraud.system.domain.transaction.Transaction;
+import com.fraud.system.interfaces.TransactionService;
+import com.fraud.system.repositories.TransactionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+@Service
+<span class="fc" id="L19">public class TransactionServiceImpl implements TransactionService {</span>
+
+<span class="fc" id="L21">    private final Map&lt;String, Map&lt;BigDecimal, LocalDateTime&gt;&gt; lastTransactionTimeMap = new ConcurrentHashMap&lt;&gt;();</span>
+    @Autowired
+    TransactionRepository transactionRepository;
+
+    @Override
+    @Transactional
+    public Transaction saveTransaction(Transaction transaction) {
+<span class="fc" id="L28">        transaction = transactionRepository.save(transaction);</span>
+
+<span class="fc" id="L30">        updateLastTransactionTime(transaction.getUserId(), transaction.getAmount());</span>
+
+<span class="fc" id="L32">        return transaction;</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean isFraudulent(Transaction transaction) {
+<span class="fc" id="L38">        String userId = transaction.getUserId();</span>
+<span class="fc" id="L39">        BigDecimal amount = transaction.getAmount();</span>
+
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if (isRecentTransaction(userId, amount)) {</span>
+<span class="nc" id="L42">            return true;</span>
+        }
+
+<span class="fc" id="L45">        List&lt;Transaction&gt; userTransactions = transactionRepository.findByUserId(userId);</span>
+
+<span class="pc bpc" id="L47" title="2 of 4 branches missed.">        if (userTransactions != null &amp;&amp; !userTransactions.isEmpty()) {</span>
+<span class="fc" id="L48">            BigDecimal sum = BigDecimal.ZERO;</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">            for (Transaction userTransaction : userTransactions) {</span>
+<span class="fc" id="L50">                sum = sum.add(userTransaction.getAmount());</span>
+<span class="fc" id="L51">            }</span>
+<span class="fc" id="L52">            BigDecimal averageAmount = sum.divide(BigDecimal.valueOf(userTransactions.size()), 2, RoundingMode.HALF_UP);</span>
+
+<span class="fc" id="L54">            BigDecimal fraudDetectionLimit = averageAmount.multiply(BigDecimal.valueOf(1.5));</span>
+
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">            return transaction.getAmount().compareTo(fraudDetectionLimit) &gt; 0;</span>
+        } else {
+<span class="nc bnc" id="L58" title="All 2 branches missed.">            return transaction.getAmount().compareTo(BigDecimal.valueOf(1000.01)) &gt;= 0;</span>
+        }
+    }
+
+    private boolean isRecentTransaction(String userId, BigDecimal amount) {
+<span class="fc" id="L63">        Map&lt;BigDecimal, LocalDateTime&gt; userTransactionTimeMap = lastTransactionTimeMap.get(userId);</span>
+
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (userTransactionTimeMap != null) {</span>
+<span class="nc" id="L66">            LocalDateTime lastTransactionTime = userTransactionTimeMap.get(amount);</span>
+
+<span class="nc bnc" id="L68" title="All 2 branches missed.">            if (lastTransactionTime != null) {</span>
+<span class="nc" id="L69">                Duration duration = Duration.between(lastTransactionTime, LocalDateTime.now());</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">                return duration.getSeconds() &lt; 600;</span>
+            }
+        }
+
+<span class="fc" id="L74">        return false;</span>
+    }
+
+    private void updateLastTransactionTime(String userId, BigDecimal amount) {
+<span class="fc" id="L78">        lastTransactionTimeMap</span>
+<span class="fc" id="L79">                .computeIfAbsent(userId, k -&gt; new ConcurrentHashMap&lt;&gt;())</span>
+<span class="fc" id="L80">                .put(amount, LocalDateTime.now());</span>
+<span class="fc" id="L81">    }</span>
+
+    public Map&lt;String, Map&lt;BigDecimal, LocalDateTime&gt;&gt; getLastTransactionTimeMap() {
+<span class="nc" id="L84">        return lastTransactionTimeMap;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
