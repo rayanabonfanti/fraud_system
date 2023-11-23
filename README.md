@@ -1,6 +1,6 @@
-# Fraud Detection System
+# Safety - Fraud Detection System
 
-O Fraud Detection System é um projeto que visa detectar transações fraudulentas em um sistema financeiro. Ele utiliza autenticação JWT para garantir a segurança das transações e roles admin e user para diferenciar as permissões de diferentes tipos de usuários.
+Safety é um projeto que visa detectar transações fraudulentas em um sistema financeiro. Ele utiliza autenticação JWT para garantir a segurança das transações e roles admin e user para diferenciar as permissões de diferentes tipos de usuários.
 
 ## Funcionalidades Principais
 
