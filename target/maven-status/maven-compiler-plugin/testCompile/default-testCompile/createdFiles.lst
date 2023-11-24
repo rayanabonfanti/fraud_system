@@ -1,7 +1,0 @@
-com/fraud/system/services/TransactionServiceImplTest.class
-com/fraud/system/controllers/AuthenticationControllerTest.class
-com/fraud/system/services/AuthorizationServiceTest.class
-com/fraud/system/exceptions/GlobalExpcetionHandlerTest.class
-com/fraud/system/exceptions/CustomExceptionTest.class
-com/fraud/system/controllers/TransactionControllerTest.class
-com/fraud/system/controllers/UserControllerTest.class

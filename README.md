@@ -1,10 +1,10 @@
 # Safety - Fraud Detection System
 
-Safety é um projeto que visa detectar transações fraudulentas em um sistema financeiro. Ele utiliza autenticação JWT para garantir a segurança das transações e roles admin e user para diferenciar as permissões de diferentes tipos de usuários.
+Safety é um projeto que visa detectar transações fraudulentas em um sistema financeiro. Ele utiliza autenticação JWT com Armazenamento em Cache (Redis) para garantir a segurança e velocidade das transações com roles admin e user para diferenciar as permissões de diferentes tipos de usuários.
 
 ## Funcionalidades Principais
 
-1. **Autenticação Segura:** O sistema utiliza autenticação JWT para garantir a segurança das transações. Cada usuário recebe um token JWT após o login bem-sucedido, que deve ser incluído em cada solicitação subsequente para autenticação com duração de até 10 minutos.
+1. **Autenticação Segura:** O sistema utiliza autenticação JWT para garantir a segurança das transações. Cada usuário recebe um token JWT que é armazenado em cache usando redis e após o login bem-sucedido, que deve ser incluído em cada solicitação subsequente para autenticação com duração de até 10 minutos.
 
 2. **Controle de Acesso com Roles:** Existem duas roles principais no sistema - admin e user. A role admin tem permissões mais amplas, incluindo a capacidade de visualizar relatórios de transações e modificar configurações do sistema, enquanto a role user tem permissões limitadas para realizar transações.
 
@@ -21,25 +21,33 @@ Safety é um projeto que visa detectar transações fraudulentas em um sistema f
 - Java 17
 - Spring Boot 3.1.1
 - Spring Security 6
+- Spring Data
 - Maven
+- Redis 
 - NoSQL (MongoDB)
+- Testes Unitários (JUnit e Mock)
 
 ### Configuração
 
 1. Configure as propriedades do banco de dados no arquivo `application.yml`.
-2. Necessário inserir as variáveis de ambiente, como por exemplo: `profile=test;my-secret-key=my-secret-key`. 
+2. Necessário inserir as variáveis de ambiente, como por exemplo: `my-secret-key=qualquerchavesecreta`. 
 2. Execute o comando para instalar as dependências: `mvn clean install`.
 3. Inicie o aplicativo com o comando: `mvn spring-boot:run`.
 
 ### Uso
 
-1. Faça login utilizando as credenciais fornecidas.
-2. Após o login, acesse as funcionalidades disponíveis com base na sua role (admin ou user).
+1. Faça o cadastro do seu usuário com a roles devidas para ele.
+2. Faça o login utilizando as credenciais fornecidas, exemplo na pasta collection há um json para ser importado no Postman já com as requests prontas.
+2. Após o login, utilize o token para acessar as funcionalidades disponíveis com base na sua role (admin ou user).
 3. Ao realizar transações, o sistema verificará automaticamente se a transação é potencialmente fraudulenta com base nos limites estabelecidos.
 
 ## Estrutura do Projeto
 
 O projeto é organizado em diferentes pacotes para facilitar a manutenção e escalabilidade. As principais classes e pacotes incluem:
+ 
+- `collection`: Collection em .json que poderá ser importado no Postman com as requests prontas para teste.
+
+Dentro do pacote main do java, terá outros pacotes divididos, como por exemplo:
 
 - `controllers`: Controladores que lidam com as solicitações HTTP.
 - `domain`: Classes e DTOs que são armazenadas no banco não relacional.
@@ -47,6 +55,14 @@ O projeto é organizado em diferentes pacotes para facilitar a manutenção e es
 - `services`: Lógica de negócios e serviços relacionados à detecção de fraude.
 - `repositories`: Acesso ao banco de dados e interação com as entidades.
 - `infra.security`: Configuração de segurança, incluindo a implementação de autenticação JWT e controle de acesso com base em roles.
+
+### Realizações Futuras
+
+1. Atualização do Jacoco Report: maven-project-info-reports-plugin.
+2. Cobertura de testes entre 80% e 100%, pois atualmente está em 70%.
+2. Inserção de MongoDB na Nuvem usando Mongo Altas.
+3. Inserção de Snapshot no AWS ou Azure.
+4. Inserção de novas funcionalidades futuramente.
 
 ## Contribuições
 

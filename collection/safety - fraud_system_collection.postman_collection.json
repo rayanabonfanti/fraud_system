@@ -1,13 +1,13 @@
 {
 	"info": {
 		"_postman_id": "0198330f-063a-4471-9766-63c6e50596f6",
-		"name": "fraud_system_collection",
+		"name": "safety - fraud_system_collection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "21117286"
 	},
 	"item": [
 		{
-			"name": "http://localhost:8080/user/register",
+			"name": "register user",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -36,7 +36,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/auth/login",
+			"name": "login",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -65,14 +65,14 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/transaction",
+			"name": "get transaction",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLWFwaSIsInN1YiI6InJheWFuYSIsImV4cCI6MTcwMDA4NTYxN30.e5pnjOWXRgjEA387bRXBq3gYBOR3FphDZ2mhkoieX9Q",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLWFwaSIsInN1YiI6InJheWFuYSIsImV4cCI6MTcwMDUwMzE5NX0.16eoK8SCnGVs7eZm4A1aG2McBlj1mNq2WFb1f-hAZRI",
 							"type": "string"
 						}
 					]
@@ -94,7 +94,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/transaction",
+			"name": "transaction",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -110,7 +110,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"userId\": \"655537cf8285b3302bf43b3b\",\n  \"amount\": 1000.00,\n  \"location\": \"Local A\"\n}\n",
+					"raw": "{\n  \"userId\": \"655537cf8285b3302bf43b3b\", //pegar quando criar usuário na collection dentro do mongodb compass\n  \"amount\": 1000.00,\n  \"location\": \"Local A\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
