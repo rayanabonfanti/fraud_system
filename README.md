@@ -60,7 +60,7 @@ Dentro do pacote main do java, terá outros pacotes divididos, como por exemplo:
 
 1. Atualização do Jacoco Report: maven-project-info-reports-plugin.
 2. Cobertura de testes entre 80% e 100%, pois atualmente está em 70%.
-2. Inserção de MongoDB na Nuvem usando Mongo Altas.
+2. Inserção de MongoDB na Nuvem usando Mongo Atlas.
 3. Inserção de Snapshot no AWS ou Azure.
 4. Inserção de novas funcionalidades futuramente.
 

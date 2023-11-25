@@ -44,20 +44,21 @@ public class TransactionServiceImpl implements TransactionService {
 
         List<Transaction> userTransactions = transactionRepository.findByUserId(userId);
 
-        if (userTransactions != null && !userTransactions.isEmpty()) {
-            BigDecimal sum = BigDecimal.ZERO;
-            for (Transaction userTransaction : userTransactions) {
-                sum = sum.add(userTransaction.getAmount());
-            }
-            BigDecimal averageAmount = sum.divide(BigDecimal.valueOf(userTransactions.size()), 2, RoundingMode.HALF_UP);
-
-            BigDecimal fraudDetectionLimit = averageAmount.multiply(BigDecimal.valueOf(1.5));
-
-            return transaction.getAmount().compareTo(fraudDetectionLimit) > 0;
-        } else {
+        if (userTransactions.isEmpty()) {
             return transaction.getAmount().compareTo(BigDecimal.valueOf(1000.01)) >= 0;
         }
+
+        BigDecimal sum = userTransactions.stream()
+                .map(Transaction::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal averageAmount = sum.divide(BigDecimal.valueOf(userTransactions.size()), 2, RoundingMode.HALF_UP);
+        BigDecimal fraudDetectionLimit = averageAmount.multiply(BigDecimal.valueOf(1.5));
+
+        return transaction.getAmount().compareTo(fraudDetectionLimit) > 0
+                || transaction.getAmount().compareTo(BigDecimal.valueOf(1000.01)) >= 0;
     }
+
 
     private boolean isRecentTransaction(String userId, BigDecimal amount) {
         Map<BigDecimal, LocalDateTime> userTransactionTimeMap = lastTransactionTimeMap.get(userId);
