@@ -17,6 +17,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class TransactionServiceImplTest {
     @Mock
@@ -50,9 +51,9 @@ public class TransactionServiceImplTest {
     @Test
     void isFraudulent_NotRecentTransactionAboveLimit_ReturnsTrue() {
         String userId = "testUser";
-        BigDecimal amount = BigDecimal.valueOf(1500);
+        BigDecimal amount = BigDecimal.valueOf(100);
 
-        List<Transaction> userTransactions = Collections.singletonList(new Transaction(userId, BigDecimal.valueOf(1000), "Local A"));
+        List<Transaction> userTransactions = Collections.singletonList(new Transaction(userId, BigDecimal.valueOf(100), "Local A"));
         when(transactionRepository.findByUserId(userId)).thenReturn(userTransactions);
 
         Transaction transaction = new Transaction();
@@ -63,7 +64,6 @@ public class TransactionServiceImplTest {
 
         assertFalse(isFraudulent);
     }
-
 
     @Test
     void isFraudulent_NotRecentTransactionBelowLimit_ReturnsFalse() {
@@ -80,6 +80,65 @@ public class TransactionServiceImplTest {
         boolean isFraudulent = transactionService.isFraudulent(transaction);
 
         assertFalse(isFraudulent);
+    }
+
+    @Test
+    void isRecentTransaction_ReturnsTrue() {
+        String userId = "testUser";
+        BigDecimal amount = BigDecimal.valueOf(1500);
+
+        Map<BigDecimal, LocalDateTime> recentTransactions = new ConcurrentHashMap<>();
+        recentTransactions.put(amount, LocalDateTime.now().minusSeconds(300));
+
+        transactionService.getLastTransactionTimeMap().put(userId, recentTransactions);
+
+        boolean result = transactionService.isRecentTransaction(userId, amount);
+        assertTrue(result);
+    }
+
+    @Test
+    void isRecentTransaction_ReturnsTrueII() {
+        String userId = "testUser";
+        BigDecimal amount = BigDecimal.valueOf(1200);
+
+        Map<BigDecimal, LocalDateTime> recentTransactions = new ConcurrentHashMap<>();
+        recentTransactions.put(amount, LocalDateTime.now().minusSeconds(300));
+
+        transactionService.getLastTransactionTimeMap().put(userId, recentTransactions);
+
+        boolean result = transactionService.isFraudulent(new Transaction(userId, amount, "Local A"));
+
+        assertTrue(result);
+    }
+
+    @Test
+    void isEmptyUserTransactions_ReturnsTrue() {
+        String userId = "testUser";
+        BigDecimal amount = BigDecimal.valueOf(1200);
+
+        when(transactionRepository.findByUserId(userId)).thenReturn(Collections.emptyList());
+
+        boolean result = transactionService.isFraudulent(new Transaction(userId, amount, "Local A"));
+
+        assertTrue(result);
+    }
+
+    @Test
+    void isRecentTransaction_ReturnsTrueIII() {
+        String userId = "testUser";
+        BigDecimal amount = BigDecimal.valueOf(1200); // Ajuste conforme necessário
+
+        // Configurar o serviço para ter uma transação recente com uma diferença maior que 600 segundos
+        Map<BigDecimal, LocalDateTime> recentTransactions = new ConcurrentHashMap<>();
+        recentTransactions.put(amount, LocalDateTime.now().minusSeconds(700)); // Mais de 600 segundos atrás
+
+        transactionService.getLastTransactionTimeMap().put(userId, recentTransactions);
+
+        // Chamar o método isFraudulent
+        boolean result = transactionService.isFraudulent(new Transaction(userId, amount, "Local A"));
+
+        // Verificar se o método retorna true
+        assertTrue(result);
     }
 
 }
