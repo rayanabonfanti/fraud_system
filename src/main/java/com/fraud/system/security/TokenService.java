@@ -36,6 +36,7 @@ public class TokenService {
                     .withExpiresAt(genExpiration())
                     .sign(algorithm);
 
+            //use uma variável de ambiente no lugar do 10 * 60
             saveUserInRedis(user, token, 10 * 60);
 
             return token;

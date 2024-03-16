@@ -7,6 +7,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FraudSystemApplication {
 
     public static void main(String[] args) {
+        //generate an if to validate even number
+
+
+
+
+
+
         SpringApplication.run(FraudSystemApplication.class);
     }
 
